@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Checklist</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>The checklist</h1>
+
+        <ajout @nouvellenote="ajouterNote"></ajout>
+        <note v-for="todo in todos" : content="todo" @click="inverser"></note>
+    </div>
+
+    <script type="module">
+    import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
+
+       createApp({
+            data() {
+                return {
+                    todos: ["Apprendre Vue JS", "Faire le ménage", "Faire les courses"]
+                }
+            },
+            methods: {
+                inverser() {
+                    this.todos.reverse()
+                },
+                ajouterNote(message) {
+                    this.todos.push(message);
+                }
+            }
+        })
+        
+        app.component('note', {
+            props: ['content'],
+            template: `<div class="alert alert-primary" role="alert">{{ content }}</div>`
+        });
+
+       app.component('ajout', {
+            props: [],
+            emits: ['nouvellenote'],
+            data() {
+                return {
+                    interne: 'Nouveau message'
+                }
+            },
+            methods: {
+                enregistrementNote() {
+                    this.$emit('nouvellenote', this.interne)
+                    this.interne ='';
+                }
+            },
+            template: `<div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Ajouter une note" aria-label="Ajouter une note" aria-describedby="button-addon2" v-model="message">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="ajouter"> <a href="#" @click="enregistrementNote" v-if=" interne != '' "> Ajouter</a></button>
+                            {{ interne }}"
+                        </div>`,
+           
+        })
+        
+        .mount('#app');
+
+    </script>
+</body>
+</html>
